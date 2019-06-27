@@ -1,7 +1,7 @@
 /*
  *
  *   Copyright 2016 Walmart Technology
- *  
+ *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
  *   You may obtain a copy of the License at
@@ -36,10 +36,11 @@ public class ResourceConfig extends WebMvcConfigurerAdapter {
     /**
      * registers the reports path as an http resource directory using /resources
      * this allows us to serve the gatling reports via http
+     *
      * @param registry
      */
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/**").addResourceLocations("file:"+logDirectory + "reports/");
+        registry.addResourceHandler("/resources/**").addResourceLocations("file:" + logDirectory + "reports/");
     }
 }

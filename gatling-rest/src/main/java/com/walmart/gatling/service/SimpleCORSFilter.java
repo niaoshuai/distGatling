@@ -26,12 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -58,13 +53,13 @@ public class SimpleCORSFilter implements Filter {
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, Accept, X-Requested-With, remember-me, Cache-Control");
 
-    	// Just REPLY OK if request method is OPTIONS for CORS (pre-flight)
-		if ( request.getMethod().equals("OPTIONS") ) {
-	        response.setStatus(HttpServletResponse.SC_OK);
-	        return;
-	    }
-		
-		chain.doFilter(req, res);
+        // Just REPLY OK if request method is OPTIONS for CORS (pre-flight)
+        if (request.getMethod().equals("OPTIONS")) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            return;
+        }
+
+        chain.doFilter(req, res);
     }
 
     @Override

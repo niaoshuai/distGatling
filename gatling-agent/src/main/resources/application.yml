@@ -19,14 +19,14 @@ akka:
   contact-points: "172.16.0.140:2551"
 
 graphite:
-    host: localhost
-    port: 2003
-    prefix: gatling-worker
-    frequency-in-seconds: 10000
+  host: localhost
+  port: 2003
+  prefix: gatling-worker
+  frequency-in-seconds: 10000
 
 jersey:
-    controller:
-        packages: com.walmart.gatling.endpoint.v1 # Base package for jersey controllers for auto registration
+  controller:
+    packages: com.walmart.gatling.endpoint.v1 # Base package for jersey controllers for auto registration
 
 logging.level.root: INFO
 logging.level.com.walmart.gatling: DEBUG
@@ -34,19 +34,19 @@ logging.level.com.walmart.gatling: DEBUG
 ---
 
 spring:
-    profiles: testing
-    
+  profiles: testing
+
 ---
 
 spring:
-    profiles: integration
+  profiles: integration
 
 logging.level.com.walmart.gatling: DEBUG
-    
+
 ---
 
 spring:
-    profiles: production
+  profiles: production
 
 logging.level.com.walmart: ERROR
 

@@ -1,7 +1,7 @@
 /*
  *
  *   Copyright 2016 Walmart Technology
- *  
+ *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
  *   You may obtain a copy of the License at
@@ -18,6 +18,8 @@
 
 package com.walmart.gatling.endpoint.v1;
 
+import com.walmart.gatling.AbstractRestIntTest;
+import com.walmart.gatling.domain.WorkerModel;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -25,21 +27,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 
-import com.walmart.gatling.AbstractRestIntTest;
-import com.walmart.gatling.domain.WorkerModel;
-
 /**
  * Trivial integration test class that exercises the Junit spring runner and in container testing.
- * 
- * @author walmart
  *
+ * @author walmart
  */
 public class RestControllerIntTest extends AbstractRestIntTest {
     private final Logger log = LoggerFactory.getLogger(RestControllerIntTest.class);
 
-    @Value("${security.username}") private String USERNAME;
-    @Value("${security.password}") private String PASSWORD;
-    
+    @Value("${security.username}")
+    private String USERNAME;
+    @Value("${security.password}")
+    private String PASSWORD;
+
     @Before
     public void setup() {
         BasicAuthorizationInterceptor bai = new BasicAuthorizationInterceptor(USERNAME, PASSWORD);
@@ -47,9 +47,9 @@ public class RestControllerIntTest extends AbstractRestIntTest {
     }
 
     @Test
-    public void test(){
-        WorkerModel[] info = template.getForObject(rootUrl+ "/server/info", WorkerModel[].class);
+    public void test() {
+        WorkerModel[] info = template.getForObject(rootUrl + "/server/info", WorkerModel[].class);
         log.debug(info.toString());
     }
-	
+
 }

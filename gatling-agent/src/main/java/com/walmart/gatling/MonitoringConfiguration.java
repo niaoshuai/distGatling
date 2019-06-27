@@ -1,7 +1,7 @@
 /*
  *
  *   Copyright 2016 Walmart Technology
- *  
+ *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
  *   You may obtain a copy of the License at
@@ -26,7 +26,6 @@ import com.codahale.metrics.graphite.GraphiteReporter;
 import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
 import com.codahale.metrics.jvm.ThreadStatesGaugeSet;
 import com.walmart.gatling.commons.HostUtils;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,9 +42,9 @@ public class MonitoringConfiguration {
 
     @Bean
     public Graphite graphite(@Value("${graphite.host}")
-                             String graphiteHost,
+                                     String graphiteHost,
                              @Value("${graphite.port}")
-                             int graphitePort) {
+                                     int graphitePort) {
         return new Graphite(
                 new InetSocketAddress(graphiteHost, graphitePort));
     }
@@ -54,7 +53,7 @@ public class MonitoringConfiguration {
     public GraphiteReporter graphiteReporter(Graphite graphite,
                                              MetricRegistry registry,
                                              @Value("${graphite.prefix}")
-    										 String prefix,@Value("${graphite.frequency-in-seconds}") long frequencyInSeconds) {
+                                                     String prefix, @Value("${graphite.frequency-in-seconds}") long frequencyInSeconds) {
         GraphiteReporter reporter =
                 GraphiteReporter.forRegistry(registry)
                         .prefixedWith(prefix + "." + HostUtils.lookupHost())
@@ -68,7 +67,7 @@ public class MonitoringConfiguration {
     }
 
     //@Bean
-    public ConsoleReporter consoleReporter( MetricRegistry registry ) {
+    public ConsoleReporter consoleReporter(MetricRegistry registry) {
         ConsoleReporter reporter = ConsoleReporter.forRegistry(registry)
                 .convertRatesTo(TimeUnit.SECONDS)
                 .convertDurationsTo(TimeUnit.MILLISECONDS)
@@ -84,6 +83,7 @@ public class MonitoringConfiguration {
         registry.register("memory", memoryUsageGaugeSet);
         return memoryUsageGaugeSet;
     }
+
     @Bean
     public ThreadStatesGaugeSet
     threadStatesGaugeSet(MetricRegistry registry) {

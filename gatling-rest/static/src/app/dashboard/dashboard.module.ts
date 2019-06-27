@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { MODULE_COMPONENTS, MODULE_ROUTES } from './dashboard.routes';
-import { CommonModule } from '@angular/common';
-import { FormsModule}   from '@angular/forms';
+import {NgModule} from '@angular/core';
+import {RouterModule} from '@angular/router';
+import {MODULE_COMPONENTS, MODULE_ROUTES} from './dashboard.routes';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
     imports: [
@@ -10,7 +10,8 @@ import { FormsModule}   from '@angular/forms';
         CommonModule,
         RouterModule.forChild(MODULE_ROUTES)
     ],
-    declarations: [ MODULE_COMPONENTS ]
+    declarations: [MODULE_COMPONENTS]
 })
 
-export class DashboardModule{}
+export class DashboardModule {
+}

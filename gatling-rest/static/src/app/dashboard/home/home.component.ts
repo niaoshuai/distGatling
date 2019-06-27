@@ -1,20 +1,18 @@
-import {Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {WorkerService} from '../../services/workers.service';
-import { ChartistModule } from 'ng-chartist';
 import * as Chartist from "chartist";
-import {IBarChartOptions, IResponsiveOptionTuple} from "chartist";
 
 @Component({
     selector: 'home-cmp',
     templateUrl: 'home.component.html',
-    providers:[WorkerService]
+    providers: [WorkerService]
 })
 
-export class HomeComponent implements OnInit{
+export class HomeComponent implements OnInit {
     private dashboardData: any;
     private errorMessage: any;
 
-    constructor(private workerService: WorkerService){
+    constructor(private workerService: WorkerService) {
 
     }
 
@@ -32,11 +30,11 @@ export class HomeComponent implements OnInit{
         );
     }
 
-    private initDashboard(dashboardData){
+    private initDashboard(dashboardData) {
 
         var dataHost = {
             labels: dashboardData.host.keys,
-            series: [ dashboardData.host.values ]
+            series: [dashboardData.host.values]
         };
 
         var optionsHost = {
@@ -54,7 +52,7 @@ export class HomeComponent implements OnInit{
 
         var dataPartition = {
             labels: dashboardData.partition.keys,
-            series: [ dashboardData.partition.values ]
+            series: [dashboardData.partition.values]
         };
 
         var optionsPartition = {

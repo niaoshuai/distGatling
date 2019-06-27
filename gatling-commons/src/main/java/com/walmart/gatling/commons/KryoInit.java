@@ -24,16 +24,15 @@ import com.esotericsoftware.kryo.Kryo;
  * Created by walmart on 5/12/17.
  */
 public class KryoInit {
-    public void customize(Kryo kryo){
+    public void customize(Kryo kryo) {
 
 
-
-     //"com.walmart.gatling.commons.JobSummary.JobInfo"
-     //"javafx.util.Pair"
-     //"java.util.ArrayList"
-     //"java.util.List"
-     //"java.util.LinkedList"
-       // com.walmart.gatling.commons.TaskEvent
+        //"com.walmart.gatling.commons.JobSummary.JobInfo"
+        //"javafx.util.Pair"
+        //"java.util.ArrayList"
+        //"java.util.List"
+        //"java.util.LinkedList"
+        // com.walmart.gatling.commons.TaskEvent
        /* kryo.register(com.walmart.gatling.commons.MasterWorkerProtocol.RegisterWorker.class);
         kryo.register(com.walmart.gatling.commons.MasterWorkerProtocol.WorkerRequestsWork.class);
         kryo.register(com.walmart.gatling.commons.MasterWorkerProtocol.WorkFailed.class);

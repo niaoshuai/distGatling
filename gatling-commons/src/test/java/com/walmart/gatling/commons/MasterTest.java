@@ -1,7 +1,7 @@
 /*
  *
  *   Copyright 2016 Walmart Technology
- *  
+ *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
  *   You may obtain a copy of the License at
@@ -40,7 +40,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by walmart
  */
-public class MasterTest  {
+public class MasterTest {
 
     protected static AgentConfig agentConfig;
     protected static ActorSystem system;
@@ -49,25 +49,7 @@ public class MasterTest  {
     short parallelism = 1;
     JobSummary.JobInfo jobinfo;
     TaskEvent taskEvent;
-    @Before
-    public void setUp(){
-        jobinfo = JobSummary.JobInfo.newBuilder()
-                .withCount(parallelism)
-                .withJobName("gatling")
-                .withPartitionAccessKey("noAccessKey")
-                .withPartitionName("public")
-                .withUser("testUser")
-                .withTrackingId(UUID.randomUUID().toString())
-                .withParameterString("")
-                .withFileFullName("FileFullName")
-                .build();
-        taskEvent = new TaskEvent();
-        {
-            taskEvent.setJobName("gatling"); //the gatling.sh script is the gateway for simulation files
-            taskEvent.setJobInfo(jobinfo);
-            taskEvent.setParameters(new ArrayList<>());
-        }
-    }
+
     @BeforeClass
     public static void setupActorSystem() throws Exception {
 
@@ -105,11 +87,30 @@ public class MasterTest  {
         return system;
     }
 
+    @Before
+    public void setUp() {
+        jobinfo = JobSummary.JobInfo.newBuilder()
+                .withCount(parallelism)
+                .withJobName("gatling")
+                .withPartitionAccessKey("noAccessKey")
+                .withPartitionName("public")
+                .withUser("testUser")
+                .withTrackingId(UUID.randomUUID().toString())
+                .withParameterString("")
+                .withFileFullName("FileFullName")
+                .build();
+        taskEvent = new TaskEvent();
+        {
+            taskEvent.setJobName("gatling"); //the gatling.sh script is the gateway for simulation files
+            taskEvent.setJobInfo(jobinfo);
+            taskEvent.setParameters(new ArrayList<>());
+        }
+    }
 
     protected Master.Job getJob() {
         String id = UUID.randomUUID().toString();
         taskEvent.setJobName("gatling");
-        Master.Job job = new Master.Job("projectName", taskEvent, id, "","simulationFilePath", "resourcesFilePath", false);
+        Master.Job job = new Master.Job("projectName", taskEvent, id, "", "simulationFilePath", "resourcesFilePath", false);
         return job;
     }
 

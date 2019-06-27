@@ -27,14 +27,14 @@ import org.springframework.data.domain.Sort;
  */
 public class PageUtils {
 
-    public static PageRequest getPageRequest( int size,  int page,  String sortBy) {
+    public static PageRequest getPageRequest(int size, int page, String sortBy) {
         PageRequest pageRequest;
-        int pageNum = page > 0 ? page-1 : 0;
+        int pageNum = page > 0 ? page - 1 : 0;
         int pageSize = size > 0 ? size : 1;
-        if(StringUtils.isEmpty(sortBy))
-            pageRequest= new PageRequest(pageNum,pageSize);
+        if (StringUtils.isEmpty(sortBy))
+            pageRequest = new PageRequest(pageNum, pageSize);
         else
-            pageRequest= new PageRequest(pageNum,pageSize, Sort.Direction.DESC,sortBy);
+            pageRequest = new PageRequest(pageNum, pageSize, Sort.Direction.DESC, sortBy);
         return pageRequest;
     }
 }

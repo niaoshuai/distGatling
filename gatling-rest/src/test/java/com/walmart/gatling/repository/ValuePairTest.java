@@ -21,7 +21,7 @@ package com.walmart.gatling.repository;
 import com.walmart.gatling.domain.WorkerModel;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by walmart on 5/3/17.
@@ -29,9 +29,9 @@ import static org.junit.Assert.*;
 public class ValuePairTest {
 
     @Test
-    public void testRoleExtractor(){
+    public void testRoleExtractor() {
         String path = "akka.tcp://PerformanceSystem@10.165.150.120:2555/user/script4#-1964952736";
-        WorkerModel pair = new WorkerModel("Idle",path,"workerId");
+        WorkerModel pair = new WorkerModel("Idle", path, "workerId");
         System.out.println(pair.getRole());
         assertEquals("script", pair.getRole().replaceAll("[0-9]", ""));
     }

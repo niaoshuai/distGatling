@@ -3,13 +3,12 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Worker, PagedResult, JobSummary, TaskEvent, JobInfo} from "./worker.metadata";
+import {JobSummary, PagedResult, Worker} from "./worker.metadata";
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import {environment} from '../../environments/environment';
-import {Router} from "@angular/router";
 
 @Injectable({
     providedIn: 'root'
@@ -17,11 +16,11 @@ import {Router} from "@angular/router";
 export class WorkerService {
     private baseUrl = environment.apiUrl;
 
-    getBaseUrl(): string {
-        return this.baseUrl;
+    constructor(private http: HttpClient) {
     }
 
-    constructor(private http: HttpClient) {
+    getBaseUrl(): string {
+        return this.baseUrl;
     }
 
     getWorkers(): Observable<Worker[]> {

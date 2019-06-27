@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {WorkerService} from '../../services/workers.service';
-import { Router } from '@angular/router';
-import { KeyVal } from '../../services/worker.metadata';
+import {Router} from '@angular/router';
+import {KeyVal} from '../../services/worker.metadata';
 
 @Component({
     selector: 'home-cmp',
@@ -9,11 +9,12 @@ import { KeyVal } from '../../services/worker.metadata';
     providers: [WorkerService]
 })
 
-export class MasterComponent implements OnInit{
+export class MasterComponent implements OnInit {
     public metrics: Array<KeyVal>;
     private errorMessage: string;
 
-    constructor(private workerService: WorkerService, private router: Router) { }
+    constructor(private workerService: WorkerService, private router: Router) {
+    }
 
     ngOnInit(): void {
         this.fetchData();
@@ -36,28 +37,28 @@ export class MasterComponent implements OnInit{
         return a;
     }
 
-    getMemoryMetrics(input:Array<KeyVal>): Array<KeyVal>{
-       let result: Array<KeyVal> = [];
-       for( let entry of input) {
-           if (entry.key.startsWith("memory.heap."))
-           result.push(entry)
-       }
-       return result;
-    }
-
-    getThreadMetrics(input:Array<KeyVal>): Array<KeyVal>{
+    getMemoryMetrics(input: Array<KeyVal>): Array<KeyVal> {
         let result: Array<KeyVal> = [];
-        for( let entry of input) {
-            if (entry.key.startsWith("threads.") )
+        for (let entry of input) {
+            if (entry.key.startsWith("memory.heap."))
                 result.push(entry)
         }
         return result;
     }
 
-    getGcMetrics(input:Array<KeyVal>): Array<KeyVal>{
+    getThreadMetrics(input: Array<KeyVal>): Array<KeyVal> {
         let result: Array<KeyVal> = [];
-        for( let entry of input) {
-            if (entry.key.startsWith("gc.") )
+        for (let entry of input) {
+            if (entry.key.startsWith("threads."))
+                result.push(entry)
+        }
+        return result;
+    }
+
+    getGcMetrics(input: Array<KeyVal>): Array<KeyVal> {
+        let result: Array<KeyVal> = [];
+        for (let entry of input) {
+            if (entry.key.startsWith("gc."))
                 result.push(entry)
         }
         return result;

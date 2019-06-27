@@ -1,7 +1,7 @@
 /*
  *
  *   Copyright 2016 Walmart Technology
- *  
+ *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
  *   You may obtain a copy of the License at
@@ -32,9 +32,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * Abstract helper class that defines necessary web integration testing annotations and common functions.
- * 
- * @author walmart
  *
+ * @author walmart
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -42,22 +41,21 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ActiveProfiles({"testing"})
 public abstract class AbstractRestIntTest {
 
-	private static final Logger logger = LoggerFactory.getLogger(AbstractRestIntTest.class);
-	@Autowired
-	protected TestRestTemplate template ;
-	protected final String rootUrl = "/api/v1";
+    private static final Logger logger = LoggerFactory.getLogger(AbstractRestIntTest.class);
+    protected final String rootUrl = "/api/v1";
+    @Autowired
+    protected TestRestTemplate template;
+    @Autowired
+    protected ObjectMapper mapper;
 
-	@Autowired
-	protected ObjectMapper mapper;
 
-
-	protected String toJson(Object obj) {
-		try {
-			return mapper.writeValueAsString(obj);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-			throw new RuntimeException("Error marshalling object '" + obj + "' to json string.", e);
-		}
-	}
+    protected String toJson(Object obj) {
+        try {
+            return mapper.writeValueAsString(obj);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error marshalling object '" + obj + "' to json string.", e);
+        }
+    }
 
 }

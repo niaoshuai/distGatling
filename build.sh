@@ -9,5 +9,5 @@ cd ../..
 rm -rf gatling-rest/src/main/resources/static/*
 cp -r gatling-rest/static/dist/gatlingUi/*  gatling-rest/src/main/resources/static/
 
-mvn clean package
+mvn clean package -Dmaven.test.skip=true
 

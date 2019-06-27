@@ -18,9 +18,6 @@
 
 package com.walmart.store.gatling
 
-import io.gatling.app.Gatling
-import io.gatling.core.config.GatlingPropertiesBuilder
-
 object Engine extends App {
 
   val props = new GatlingPropertiesBuilder
@@ -32,17 +29,17 @@ object Engine extends App {
   sys.exit()
 
   /** val usage =
-    """
-      |Usage: java -jar gatling-1.2-SNAPSHOT.jar [similation name]
-    """.stripMargin
-  val props = new GatlingPropertiesBuilder
-  props.dataDirectory("jar")
-  if(args.length == 0) {
-    println(usage)
-  } else {
-    props.simulationClass(args(0))
-    Gatling.fromMap(props.build)
-  }
-  sys.exit()
-    **/
+    * """
+    * |Usage: java -jar gatling-1.2-SNAPSHOT.jar [similation name]
+    * """.stripMargin
+    * val props = new GatlingPropertiesBuilder
+    *props.dataDirectory("jar")
+    * if(args.length == 0) {
+    * println(usage)
+    * } else {
+    *props.simulationClass(args(0))
+    *Gatling.fromMap(props.build)
+    * }
+    *sys.exit()
+    * */
 }

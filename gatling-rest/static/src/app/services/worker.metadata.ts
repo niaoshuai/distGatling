@@ -16,7 +16,7 @@ export interface JobInfo {
 
 }
 
-export interface TaskEvent{
+export interface TaskEvent {
     jobName: string;
     startTimeStamp: number;
     endTimeStamp: number;
@@ -25,7 +25,7 @@ export interface TaskEvent{
     stdLogPath: string
     status: string;
     taskJobId: string;
-    parameters: { key:string; value:string };
+    parameters: { key: string; value: string };
     jobInfo: JobInfo;
 
 }
@@ -51,16 +51,17 @@ export interface PagedResult {
 }
 
 export interface KeyVal {
-    key:string,
-    val:number
+    key: string,
+    val: number
 }
 
-export class SimulationModel{
-    constructor(public packageName:string,
-                public partitionName:string,
+export class SimulationModel {
+    constructor(public packageName: string,
+                public partitionName: string,
                 public parameter: string,
                 public userName: string,
                 public accessKey: string,
                 public parallelism: number
-    ){}
+    ) {
+    }
 }

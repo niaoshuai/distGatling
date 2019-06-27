@@ -1,7 +1,7 @@
 /*
  *
  *   Copyright 2016 Walmart Technology
- *  
+ *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
  *   You may obtain a copy of the License at
@@ -23,22 +23,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.StreamingOutput;
-import javax.ws.rs.core.UriInfo;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
+import java.io.*;
 
 /**
  * Created by walmart
@@ -55,7 +42,7 @@ public class LibResource {
     UriInfo uriInfo;
 
     @Inject
-    public LibResource(){
+    public LibResource() {
 
     }
 
@@ -67,7 +54,7 @@ public class LibResource {
         try {
             File logFile = new File(filePath);
             return Response.ok(logFile, MediaType.APPLICATION_OCTET_STREAM)
-                    .header("Content-Disposition", "attachment; filename=\"" + logFile.getName() + "\"" ) //optional
+                    .header("Content-Disposition", "attachment; filename=\"" + logFile.getName() + "\"") //optional
                     .build();
         } catch (Exception e) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -82,7 +69,7 @@ public class LibResource {
 
         try {
             File f = new File(filePath);
-            log.info("File: {}",filePath);
+            log.info("File: {}", filePath);
             final FileInputStream fStream = new FileInputStream(f);
             StreamingOutput stream = output -> {
                 try {
@@ -106,7 +93,6 @@ public class LibResource {
         }
         os.close();
     }
-
 
 
 }

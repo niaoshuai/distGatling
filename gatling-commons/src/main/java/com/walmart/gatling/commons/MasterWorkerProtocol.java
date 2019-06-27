@@ -1,7 +1,7 @@
 /*
  *
  *   Copyright 2016 Walmart Technology
- *  
+ *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
  *   You may obtain a copy of the License at
@@ -61,7 +61,7 @@ public abstract class MasterWorkerProtocol {
         public final String role;
         public final String host;
 
-        public WorkerRequestsFile(String workerId, String role,String host) {
+        public WorkerRequestsFile(String workerId, String role, String host) {
             this.workerId = workerId;
             this.role = role;
             this.host = host;
@@ -103,7 +103,7 @@ public abstract class MasterWorkerProtocol {
         public final String workId;
         public final Object result;
 
-        public WorkFailed(String workerId, String workId,Object result) {
+        public WorkFailed(String workerId, String workId, Object result) {
             this.workerId = workerId;
             this.workId = workId;
             this.result = result;

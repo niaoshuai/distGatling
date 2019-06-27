@@ -1,7 +1,7 @@
 /*
  *
  *   Copyright 2016 Walmart Technology
- *  
+ *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
  *   You may obtain a copy of the License at
@@ -24,7 +24,6 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpMethod;
@@ -34,13 +33,13 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * Abstract helper class that defines necessary web integration testing annotations and common functions.
- * 
- * @author walmart
  *
+ * @author walmart
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -48,60 +47,59 @@ import static org.junit.Assert.*;
 @ActiveProfiles({"testing"})
 public abstract class AbstractRestIntTest {
 
-	private static final Logger logger = LoggerFactory.getLogger(AbstractRestIntTest.class);
-	@Autowired
-	protected TestRestTemplate template ;
-	protected final String rootUrl = "/gatling";
+    private static final Logger logger = LoggerFactory.getLogger(AbstractRestIntTest.class);
+    protected final String rootUrl = "/gatling";
+    @Autowired
+    protected TestRestTemplate template;
+    @Autowired
+    protected ObjectMapper mapper;
 
-	@Autowired
-	protected ObjectMapper mapper;
+    protected String toJson(Object obj) {
+        try {
+            return mapper.writeValueAsString(obj);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error marshalling object '" + obj + "' to json string.", e);
+        }
+    }
 
-	protected String toJson(Object obj) {
-		try {
-			return mapper.writeValueAsString(obj);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-			throw new RuntimeException("Error marshalling object '" + obj + "' to json string.", e);
-		}
-	}
+    protected void assertJsonEquals(Object obj, Object obj2) {
+        assertEquals("Objects not equal:  " + obj + ", " + obj2, toJson(obj), toJson(obj2));
+    }
 
-	protected void assertJsonEquals(Object obj, Object obj2) {
-		assertEquals("Objects not equal:  " + obj + ", " + obj2, toJson(obj), toJson(obj2));
-	}
+    protected <T> T getForObject(String url, Class<T> responseType) {
+        return getForObject(url, responseType, HttpStatus.OK);
+    }
 
-	protected <T> T getForObject(String url, Class<T> responseType) {
-		return getForObject(url, responseType, HttpStatus.OK);
-	}
+    protected void delete(String url, HttpStatus status) {
+        ResponseEntity<Void> response = template.exchange(url, HttpMethod.DELETE, null, Void.class);
+        HttpStatus code = response.getStatusCode();
+        assertEquals(status, code);
+    }
 
-	protected void delete(String url, HttpStatus status) {
-		ResponseEntity<Void> response = template.exchange(url, HttpMethod.DELETE, null, Void.class);
-		HttpStatus code = response.getStatusCode();
-		assertEquals(status, code);
-	}
+    protected HttpStatus delete(String url) {
+        ResponseEntity<Void> response = template.exchange(url, HttpMethod.DELETE, null, Void.class);
+        HttpStatus code = response.getStatusCode();
+        if (code == HttpStatus.OK || code == HttpStatus.NO_CONTENT || code == HttpStatus.NOT_FOUND)
+            return response.getStatusCode();
+        else {
+            fail("Expected the delete response to be 200 or 404, but was " + code.value() + "(" + code.getReasonPhrase() + ").");
+            return null; //for compiler
+        }
+    }
 
-	protected HttpStatus delete(String url) {
-		ResponseEntity<Void> response = template.exchange(url, HttpMethod.DELETE, null, Void.class);
-		HttpStatus code = response.getStatusCode();
-		if(code == HttpStatus.OK || code == HttpStatus.NO_CONTENT || code == HttpStatus.NOT_FOUND)
-			return response.getStatusCode();
-		else {
-			fail("Expected the delete response to be 200 or 404, but was " + code.value() + "(" + code.getReasonPhrase() + ").");
-			return null; //for compiler
-		}
-	}
-
-	protected <T> T getForObject(String url, Class<T> responseType,
-								 HttpStatus expectedStatus) {
-		ResponseEntity<T> entity = template.getForEntity(url, responseType);
-		assertEquals(expectedStatus, entity.getStatusCode());
-		return entity.getBody();
-	}
+    protected <T> T getForObject(String url, Class<T> responseType,
+                                 HttpStatus expectedStatus) {
+        ResponseEntity<T> entity = template.getForEntity(url, responseType);
+        assertEquals(expectedStatus, entity.getStatusCode());
+        return entity.getBody();
+    }
 
 
-	protected <T> T postForObject(String url, Object post, Class<T> responseType,
-								  HttpStatus expectedStatus) {
-		ResponseEntity<T> entity = template.postForEntity(url, post, responseType);
-		assertEquals(expectedStatus, entity.getStatusCode());
-		return entity.getBody();
-	}
+    protected <T> T postForObject(String url, Object post, Class<T> responseType,
+                                  HttpStatus expectedStatus) {
+        ResponseEntity<T> entity = template.postForEntity(url, post, responseType);
+        assertEquals(expectedStatus, entity.getStatusCode());
+        return entity.getBody();
+    }
 }

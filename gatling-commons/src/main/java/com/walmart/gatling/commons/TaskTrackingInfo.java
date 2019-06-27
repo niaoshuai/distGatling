@@ -1,7 +1,7 @@
 /*
  *
  *   Copyright 2016 Walmart Technology
- *  
+ *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
  *   You may obtain a copy of the License at
@@ -25,12 +25,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class TaskTrackingInfo {
+    private String errorLog;
+    private String stdLog;
+
     public TaskTrackingInfo(String errorLog, String stdLog) {
         this.errorLog = errorLog;
         this.stdLog = stdLog;
     }
-
-    private String errorLog;
 
     public String getStdLog() {
         return stdLog;
@@ -47,8 +48,6 @@ public class TaskTrackingInfo {
     public void setErrorLog(String errorLog) {
         this.errorLog = errorLog;
     }
-
-    private String stdLog;
 
     @Override
     public String toString() {

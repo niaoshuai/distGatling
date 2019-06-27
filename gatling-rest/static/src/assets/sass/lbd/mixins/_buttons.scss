@@ -28,7 +28,7 @@
     &:active,
     &.active {
       background-color: $transparent-bg;
-          border-color: $btn-color;
+      border-color: $btn-color;
     }
   }
 
@@ -42,33 +42,33 @@
     &:focus,
     &:active,
     &.active,
-    .open > &.dropdown-toggle{
-        background-color: $btn-states-color;
-        color: $white-color;
+    .open > &.dropdown-toggle {
+      background-color: $btn-states-color;
+      color: $white-color;
     }
 
-    .caret{
-        border-top-color: $white-color;
+    .caret {
+      border-top-color: $white-color;
     }
   }
 
-  .caret{
-      border-top-color: $btn-color;
+  .caret {
+    border-top-color: $btn-color;
   }
 }
 
 
-@mixin btn-size($padding-vertical, $padding-horizontal, $font-size, $border){
-   font-size: $font-size;
-   border-radius: $border;
-   padding: $padding-vertical $padding-horizontal;
+@mixin btn-size($padding-vertical, $padding-horizontal, $font-size, $border) {
+  font-size: $font-size;
+  border-radius: $border;
+  padding: $padding-vertical $padding-horizontal;
 
-   &.btn-round{
-       padding: $padding-vertical + 1 $padding-horizontal;
-   }
+  &.btn-round {
+    padding: $padding-vertical + 1 $padding-horizontal;
+  }
 
-   &.btn-simple{
-       padding: $padding-vertical + 2 $padding-horizontal;
-   }
+  &.btn-simple {
+    padding: $padding-vertical + 2 $padding-horizontal;
+  }
 
 }

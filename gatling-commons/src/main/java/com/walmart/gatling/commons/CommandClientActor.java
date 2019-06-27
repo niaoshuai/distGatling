@@ -32,12 +32,16 @@ import java.util.UUID;
 
 public class CommandClientActor extends AbstractActor {
 
+    private static final Object StartCommand = new Object() {
+        @Override
+        public String toString() {
+            return "SubmitCommandToCluster";
+        }
+    };
     private final ActorRef clusterClient;
     private final ClientConfig clientConfig;
     private final String clientId = UUID.randomUUID().toString();
     private LoggingAdapter log = Logging.getLogger(getContext().system(), this);
-    private String currentJobId = null;
-
     private final Procedure<Object> working = new Procedure<Object>() {
         public void apply(Object message) {
             log.info("{}", message);
@@ -52,28 +56,27 @@ public class CommandClientActor extends AbstractActor {
 
     private final Procedure<Object> idle = new Procedure<Object>() {
         public void apply(Object message) {
-            if(message== StartCommand){
+            if (message == StartCommand) {
                 //upload artifacts if not remoteArtifact
                 //upload jar=>jarPath
                 //upload feed=>feedPath
                 //
                 sendToMaster(new MasterClientProtocol.CommandLineJob(clientId, clientConfig));
                 getContext().become(receiveBuilder()
-                        .matchAny(p->working.apply(p))
+                        .matchAny(p -> working.apply(p))
                         .build());
-            }
-            else {
+            } else {
                 unhandled(message);
             }
         }
     };
+    private String currentJobId = null;
 
-    private static final Object StartCommand = new Object() {
-        @Override
-        public String toString() {
-            return "SubmitCommandToCluster";
-        }
-    };
+    {
+        getContext().become(receiveBuilder()
+                .matchAny(p -> idle.apply(p))
+                .build());
+    }
 
     public CommandClientActor(ActorRef clusterClient, ClientConfig clientConfig) {
         this.clusterClient = clusterClient;
@@ -86,15 +89,12 @@ public class CommandClientActor extends AbstractActor {
         return Props.create(CommandClientActor.class, clusterClient, clientConfig);
     }
 
-
-
     private String jobId() {
-        if (currentJobId!=null)
+        if (currentJobId != null)
             return currentJobId;
         else
             throw new IllegalStateException("Not working");
     }
-
 
     @Override
     public void postStop() {
@@ -104,13 +104,6 @@ public class CommandClientActor extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .build();
-    }
-
-
-    {
-        getContext().become(receiveBuilder()
-                .matchAny(p->idle.apply(p))
-                .build());
     }
 
     @Override

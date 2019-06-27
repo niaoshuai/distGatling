@@ -1,2 +1,3 @@
-declare function initNotify():void;
+declare function initNotify(): void;
+
 export = initNotify;

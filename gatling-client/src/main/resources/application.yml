@@ -13,10 +13,10 @@ client.accessKey: optional #optional access key for the partition
 client.partitionName: public
 client.className: optional
 client.parameter: -Dusers=100 -Dramps=1 -DsimulationClass=com.walmart.store.gatling.simulation.BasicSimulation    #the simulation class is required
-client.resourcesFeedPath: /Users/ahailem/workspace/dist-gatling-2/distGatling/gatling-uber-example/toupload.zip # path to the data feed file
+client.resourcesFeedPath: /data/code/github.com/niaoshuai/distGatling/gatling-uber-example/toupload.zip # path to the data feed file
 client.quiet: false
 client.parallelism: 1
-client.jarPath: /Users/ahailem/workspace/dist-gatling-2/distGatling/gatling-uber-example/target/gatling-uber-example-1.0.2-SNAPSHOT.jar #path to uber jar
+client.jarPath: /data/code/github.com/niaoshuai/distGatling/gatling-uber-example/target/gatling-uber-example-1.0.2-SNAPSHOT.jar #path to uber jar
 client.userName: Abiy
 client.remoteArtifact: false
 client.resourcesFeedFileName: toupload #data feed file name

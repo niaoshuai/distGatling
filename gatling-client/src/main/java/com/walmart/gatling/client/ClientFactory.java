@@ -46,13 +46,13 @@ public class ClientFactory {
         ActorSystem system = ActorSystem.create(Constants.PerformanceSystem, conf);
 
         Set<ActorPath> initialContacts = new HashSet<>(clientConfig.getContactPoint()
-                    .map(p->ActorPaths.fromString(p))
-                    .collect(Collectors.toList()));
+                .map(p -> ActorPaths.fromString(p))
+                .collect(Collectors.toList()));
 
-        ClusterClientSettings settings =  ClusterClientSettings.create(system).withInitialContacts(initialContacts);
+        ClusterClientSettings settings = ClusterClientSettings.create(system).withInitialContacts(initialContacts);
         final ActorRef clusterClient = system.actorOf(ClusterClient.props(settings), "clusterClient");
 
-        system.actorOf(CommandClientActor.props(clusterClient, clientConfig), clientConfig.getRole() );
+        system.actorOf(CommandClientActor.props(clusterClient, clientConfig), clientConfig.getRole());
 
         return system;
 

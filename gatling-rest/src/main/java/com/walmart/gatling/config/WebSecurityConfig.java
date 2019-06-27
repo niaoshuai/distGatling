@@ -1,5 +1,8 @@
 package com.walmart.gatling.config;
 
+import com.walmart.gatling.security.rest.RestAuthenticationAccessDeniedHandler;
+import com.walmart.gatling.security.rest.RestAuthenticationEntryPoint;
+import com.walmart.gatling.service.SimpleCORSFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -10,33 +13,33 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 
-import com.walmart.gatling.security.rest.RestAuthenticationAccessDeniedHandler;
-import com.walmart.gatling.security.rest.RestAuthenticationEntryPoint;
-import com.walmart.gatling.service.SimpleCORSFilter;
-
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Value("${security.username}") private String USERNAME;
-    @Value("${security.password}") private String PASSWORD;
-	
+    @Value("${security.username}")
+    private String USERNAME;
+    @Value("${security.password}")
+    private String PASSWORD;
+
     @Override
     public void configure(WebSecurity web) throws Exception {
         // Filters will not get executed for the resources
         web.ignoring().antMatchers("/", "/resources/**", "/static/**", "/public/**", "/webui/**", "/h2-console/**"
-            , "/gatling/lib/**", "/configuration/**", "/swagger-ui/**", "/swagger-resources/**", "/api-docs", "/api-docs/**", "/v2/api-docs/**"
-            , "/*.html", "/**/*.html" ,"/**/*.css","/**/*.js","/**/*.png","/**/*.jpg", "/**/*.gif", "/**/*.svg", "/**/*.ico", "/**/*.ttf","/**/*.woff","/**/*.otf");
+                , "/gatling/lib/**", "/configuration/**", "/swagger-ui/**", "/swagger-resources/**", "/api-docs", "/api-docs/**", "/v2/api-docs/**"
+                , "/*.html", "/**/*.html", "/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg", "/**/*.gif", "/**/*.svg", "/**/*.ico", "/**/*.ttf", "/**/*.woff", "/**/*.otf");
     }
 
-    @Override public void configure(AuthenticationManagerBuilder auth) throws Exception {
-    	auth.inMemoryAuthentication()
-    	.withUser(USERNAME)
-    	.password(PASSWORD)
-    	.roles("USER", "ACTUATOR");
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication()
+                .withUser(USERNAME)
+                .password(PASSWORD)
+                .roles("USER", "ACTUATOR");
     }
 
-    @Override protected void configure(HttpSecurity http) throws Exception {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
         http
                 .antMatcher("/**").csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

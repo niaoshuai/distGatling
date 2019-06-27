@@ -47,14 +47,14 @@ public class ClientConfig implements Serializable {
     private String jarFileName;
 
     public String getResourcesFeedFileName() {
-		return resourcesFeedFileName;
-	}
+        return resourcesFeedFileName;
+    }
 
-	public void setResourcesFeedFileName(String resourcesFeedFileName) {
-		this.resourcesFeedFileName = resourcesFeedFileName;
-	}
+    public void setResourcesFeedFileName(String resourcesFeedFileName) {
+        this.resourcesFeedFileName = resourcesFeedFileName;
+    }
 
-	public boolean isRemoteArtifact() {
+    public boolean isRemoteArtifact() {
         return remoteArtifact;
     }
 
@@ -79,14 +79,14 @@ public class ClientConfig implements Serializable {
     }
 
     public String getResourcesFeedPath() {
-		return resourcesFeedPath;
-	}
+        return resourcesFeedPath;
+    }
 
-	public void setResourcesFeedPath(String resourcesFeedPath) {
-		this.resourcesFeedPath = resourcesFeedPath;
-	}
+    public void setResourcesFeedPath(String resourcesFeedPath) {
+        this.resourcesFeedPath = resourcesFeedPath;
+    }
 
-	public boolean isQuiet() {
+    public boolean isQuiet() {
         return quiet;
     }
 
@@ -135,7 +135,7 @@ public class ClientConfig implements Serializable {
     }
 
     public Stream<String> getContactPoint() {
-        String[] contacts = contactPoint.split(",") ;
+        String[] contacts = contactPoint.split(",");
         return Stream.of(contacts)
                 .map(p -> String.format("akka.tcp://%s@%s/system/receptionist", Constants.PerformanceSystem, p));
     }
@@ -176,11 +176,11 @@ public class ClientConfig implements Serializable {
         this.userName = userName;
     }
 
-    public void setJarFileName(String jarFileName) {
-        this.jarFileName = jarFileName;
-    }
-
     public String getJarFileName() {
         return jarFileName;
+    }
+
+    public void setJarFileName(String jarFileName) {
+        this.jarFileName = jarFileName;
     }
 }

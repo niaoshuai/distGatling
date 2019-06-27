@@ -40,14 +40,14 @@ import java.io.IOException;
 public class UploadUtils {
     protected static final Log logger = LogFactory.getLog(UploadUtils.class);
 
-    public static String uploadFile(String server, String path,String basicToken)
-        throws IOException {
+    public static String uploadFile(String server, String path, String basicToken)
+            throws IOException {
         CloseableHttpClient client = HttpClientBuilder.create()
                 .build();
 
 
-        HttpPost post = new HttpPost( server + "/uploadFile");
-        post.setHeader("Authorization",basicToken);
+        HttpPost post = new HttpPost(server + "/uploadFile");
+        post.setHeader("Authorization", basicToken);
         //File jarFile = new File(jarFilePath);
         File dataFeedFile = new File(path);
         String message = HostUtils.lookupIp();
@@ -66,18 +66,17 @@ public class UploadUtils {
                     .getStatusCode();
             String result = IOUtils.toString(response.getEntity().getContent());
             logger.info(result);
-            if (statusCode != 200){
+            if (statusCode != 200) {
                 throw new RuntimeException("Upload Failed");
             }
             return result;
         } catch (IOException e) {
             throw e;
-        }
-        finally {
+        } finally {
             try {
                 client.close();
             } catch (IOException e) {
-               throw e;
+                throw e;
             }
         }
     }

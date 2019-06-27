@@ -1,7 +1,7 @@
 /*
  *
  *   Copyright 2016 Walmart Technology
- *  
+ *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
  *   You may obtain a copy of the License at
@@ -27,8 +27,8 @@ import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import akka.persistence.AbstractPersistentActor;
 import akka.persistence.Recovery;
-import jersey.repackaged.com.google.common.collect.ImmutableList;
-import jersey.repackaged.com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import org.apache.commons.io.FileUtils;
 import scala.collection.JavaConversions;
 import scala.concurrent.duration.Deadline;
@@ -37,16 +37,7 @@ import scala.concurrent.duration.FiniteDuration;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Master extends AbstractPersistentActor {
@@ -89,8 +80,9 @@ public class Master extends AbstractPersistentActor {
         if (jobDatabase.hasJob()) {
             // could pick a few random instead of all
             for (WorkerState state : workers.values()) {
-                if (state.status.isIdle())
+                if (state.status.isIdle()) {
                     state.ref.tell(MasterWorkerProtocol.WorkIsReady.getInstance(), getSelf());
+                }
             }
         }
     }
@@ -170,8 +162,7 @@ public class Master extends AbstractPersistentActor {
                         notifyWorkers();
                     });
                 }
-            }
-            else {
+            } else {
                 if (state.status.getDeadLine().isOverdue()) { //we missed pings from worker or worker is dead
                     tobeRemoved.add(workerId);
                 }
@@ -354,14 +345,13 @@ public class Master extends AbstractPersistentActor {
                 }
                 //}
             }
-        }
-        else {
+        } else {
             extendIdleExpiryTime(workerId);
         }
     }
 
     private void extendIdleExpiryTime(String workerId) {
-        if(workers.get(workerId).status.isIdle()) {
+        if (workers.get(workerId).status.isIdle()) {
             workers.put(workerId, workers.get(workerId).copyWithStatus(new Idle(workTimeout.fromNow())));
         }
     }
@@ -491,10 +481,12 @@ public class Master extends AbstractPersistentActor {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o)
+            if (this == o) {
                 return true;
-            if (o == null || !getClass().equals(o.getClass()))
+            }
+            if (o == null || !getClass().equals(o.getClass())) {
                 return false;
+            }
 
             WorkerState that = (WorkerState) o;
 

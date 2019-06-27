@@ -63,7 +63,8 @@ public abstract class MasterClientProtocol {
                     "job=" + trackingId +
                     '}';
         }
-        public String getTrackingDetail(){
+
+        public String getTrackingDetail() {
             return "#detail/" + trackingId;
         }
     }

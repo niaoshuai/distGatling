@@ -1,7 +1,7 @@
 /*
  *
  *   Copyright 2016 Walmart Technology
- *  
+ *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
  *   You may obtain a copy of the License at
@@ -20,17 +20,10 @@ package com.walmart.gatling.service;
 
 import akka.actor.ActorRef;
 import akka.util.Timeout;
-import com.walmart.gatling.commons.AgentConfig;
-import com.walmart.gatling.commons.JobSummary;
-import com.walmart.gatling.commons.Master;
-import com.walmart.gatling.commons.MasterClientActor;
-import com.walmart.gatling.commons.ReportExecutor;
-import com.walmart.gatling.commons.TaskEvent;
-import com.walmart.gatling.commons.TrackingResult;
+import com.walmart.gatling.commons.*;
 import com.walmart.gatling.domain.SimulationJobModel;
 import com.walmart.gatling.service.exception.NotFoundException;
 import com.walmart.gatling.service.exception.UnknownResourceException;
-
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,15 +37,8 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
-
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import static akka.pattern.Patterns.ask;
 
@@ -122,7 +108,7 @@ public class ServerRepository {
      */
     public Optional<String> submitSimulationJob(SimulationJobModel simulationJobModel) throws Exception {
         String trackingId = UUID.randomUUID().toString();
-        List<String> parameters = Arrays.asList( );//"-nr",  "-m", "-s",  simulationJobModel.getFileFullName());
+        List<String> parameters = Arrays.asList();//"-nr",  "-m", "-s",  simulationJobModel.getFileFullName());
         boolean hasResourcesFeed = !(simulationJobModel.getResourcesFile() == null || simulationJobModel.getResourcesFile().isEmpty());
         JobSummary.JobInfo jobinfo = JobSummary.JobInfo.newBuilder()
                 .withCount(simulationJobModel.getCount())
@@ -144,10 +130,10 @@ public class ServerRepository {
             taskEvent.setJobInfo(jobinfo);
             taskEvent.setParameters(new ArrayList<>(parameters));
             Future<Object> future = ask(router, new Master.Job(simulationJobModel.getRoleId(), taskEvent, trackingId,
-                    agentConfig.getAbortUrl(),
-                    agentConfig.getJobFileUrl(simulationJobModel.getSimulation()),
-                    agentConfig.getJobFileUrl(simulationJobModel.getResourcesFile()),
-                    false),
+                            agentConfig.getAbortUrl(),
+                            agentConfig.getJobFileUrl(simulationJobModel.getSimulation()),
+                            agentConfig.getJobFileUrl(simulationJobModel.getResourcesFile()),
+                            false),
                     timeout);
             Object result = Await.result(future, timeout.duration());
             if (result instanceof MasterClientActor.Ok) {
@@ -164,11 +150,11 @@ public class ServerRepository {
     }
 
     private String getResourcesFileName(SimulationJobModel simulationJobModel, boolean hasBodiesFeed) {
-        if(!hasBodiesFeed)
+        if (!hasBodiesFeed)
             return "";
         String[] splits = simulationJobModel.getResourcesFile().split("/");
         if (splits.length > 0) //return the last name
-            return splits[splits.length-1];
+            return splits[splits.length - 1];
         return "";
     }
 
@@ -248,50 +234,48 @@ public class ServerRepository {
 
     }
 
-	public String getLogResult(String trackingId, String taskJobId, String logType) throws NotFoundException, UnknownResourceException{
-    	List<JobSummary> summaries = getJobSummary();
+    public String getLogResult(String trackingId, String taskJobId, String logType) throws NotFoundException, UnknownResourceException {
+        List<JobSummary> summaries = getJobSummary();
         Optional<JobSummary> summary = summaries.stream().filter(p -> p.getJobInfo().trackingId.equalsIgnoreCase(trackingId)).findFirst();
         log.info("Processing  get job detail.");
 
-        if(summary.isPresent()) {
-    		Optional<TaskEvent> taskEvent = summary.get().getTaskInfoList().stream().filter(p -> p.getTaskJobId().equalsIgnoreCase(taskJobId)).findFirst();
-    		if (taskEvent.isPresent()) {
-    			
-    			String logPath = taskEvent.get().getErrorLogPath();
-    			if ("std".equalsIgnoreCase(logType)) {
-    				logPath = taskEvent.get().getStdLogPath();
-    			}
-    	        return loadLogFromPath(logPath);
-    		}
-    		else
-    			throw new UnknownResourceException("The Specified taskJobId id is not available.");
-        }
-        else
-			throw new UnknownResourceException("The Specified tracking id id is not available.");
-	}
+        if (summary.isPresent()) {
+            Optional<TaskEvent> taskEvent = summary.get().getTaskInfoList().stream().filter(p -> p.getTaskJobId().equalsIgnoreCase(taskJobId)).findFirst();
+            if (taskEvent.isPresent()) {
 
-	private String loadLogFromPath(String logPath) throws NotFoundException {
-		URL url = null;
-		try {
-		    url = new URL(logPath);
-		} catch (MalformedURLException e) {
-		    log.error("Error on URL for receiving abort status: {}",e);
-		    e.printStackTrace();
-			throw new NotFoundException();
-		}
-		try (InputStream input = url.openStream()) {
-			
-			try {
-		        String resultString = IOUtils.toString(input, StandardCharsets.UTF_8.toString());
-		    	return resultString;
-		    } catch (Exception e) {
-		    	throw new NotFoundException();
-		    }
-			
-		} catch (IOException e) {
-		    log.error("Error receiving abort status: {}",e);
-		    e.printStackTrace();
-			throw new NotFoundException();
-		}
-	}
+                String logPath = taskEvent.get().getErrorLogPath();
+                if ("std".equalsIgnoreCase(logType)) {
+                    logPath = taskEvent.get().getStdLogPath();
+                }
+                return loadLogFromPath(logPath);
+            } else
+                throw new UnknownResourceException("The Specified taskJobId id is not available.");
+        } else
+            throw new UnknownResourceException("The Specified tracking id id is not available.");
+    }
+
+    private String loadLogFromPath(String logPath) throws NotFoundException {
+        URL url = null;
+        try {
+            url = new URL(logPath);
+        } catch (MalformedURLException e) {
+            log.error("Error on URL for receiving abort status: {}", e);
+            e.printStackTrace();
+            throw new NotFoundException();
+        }
+        try (InputStream input = url.openStream()) {
+
+            try {
+                String resultString = IOUtils.toString(input, StandardCharsets.UTF_8.toString());
+                return resultString;
+            } catch (Exception e) {
+                throw new NotFoundException();
+            }
+
+        } catch (IOException e) {
+            log.error("Error receiving abort status: {}", e);
+            e.printStackTrace();
+            throw new NotFoundException();
+        }
+    }
 }

@@ -139,14 +139,11 @@ public class JobSummary implements Serializable {
         public String resourcesFileName;
         public String jarFileName;
 
-        public String getFileNameFromPackageName(){
-            return fileFullName.replace('.', '/') + ".scala";
-        }
         public JobInfo() {
         }
 
         public JobInfo(String partitionAccessKey, String user, String partitionName, String jobName, String trackingId, short count, String fileFullName, boolean hasResourcesFeed, String parameterString, String resourcesFilename
-        , String jarFileName) {
+                , String jarFileName) {
             this.partitionAccessKey = partitionAccessKey;
             this.user = user;
             this.partitionName = partitionName;
@@ -157,7 +154,7 @@ public class JobSummary implements Serializable {
             this.hasResourcesFeed = hasResourcesFeed;
             this.parameterString = parameterString;
             this.resourcesFileName = resourcesFilename;
-            this.jarFileName =   jarFileName;
+            this.jarFileName = jarFileName;
         }
 
         private JobInfo(Builder builder) {
@@ -178,7 +175,13 @@ public class JobSummary implements Serializable {
             return new Builder();
         }
 
+        public String getFileNameFromPackageName() {
+            return fileFullName.replace('.', '/') + ".scala";
+        }
+
         public static final class Builder {
+            public String resourcesFileName;
+            public String jarFileName;
             private String partitionAccessKey;
             private String user;
             private String partitionName;
@@ -188,8 +191,6 @@ public class JobSummary implements Serializable {
             private String fileFullName;
             private boolean hasResourcesFeed;
             private String parameterString;
-            public String resourcesFileName;
-            public String jarFileName;
 
             private Builder() {
             }
@@ -198,6 +199,7 @@ public class JobSummary implements Serializable {
                 this.partitionAccessKey = partitionAccessKey;
                 return this;
             }
+
             public Builder withFileFullName(String fileFullName) {
                 this.fileFullName = fileFullName;
                 return this;
@@ -224,7 +226,7 @@ public class JobSummary implements Serializable {
             }
 
             public Builder withHasResourcesFeed(boolean hasResourcesFeed) {
-            	this.hasResourcesFeed = hasResourcesFeed;
+                this.hasResourcesFeed = hasResourcesFeed;
                 return this;
             }
 
@@ -232,6 +234,7 @@ public class JobSummary implements Serializable {
                 this.parameterString = parameterString;
                 return this;
             }
+
             public Builder withCount(short count) {
                 this.count = count;
                 return this;

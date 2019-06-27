@@ -1,7 +1,7 @@
 /*
  *
  *   Copyright 2016 Walmart Technology
- *  
+ *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
  *   You may obtain a copy of the License at
@@ -18,12 +18,7 @@
 
 package com.walmart.gatling.commons;
 
-import akka.japi.pf.FI;
-import org.apache.commons.exec.CommandLine;
-import org.apache.commons.exec.DefaultExecutor;
-import org.apache.commons.exec.ExecuteWatchdog;
-import org.apache.commons.exec.LogOutputStream;
-import org.apache.commons.exec.PumpStreamHandler;
+import org.apache.commons.exec.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
@@ -36,9 +31,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import akka.event.Logging;
-import akka.event.LoggingAdapter;
 //import javafx.util.Pair;
 
 /**
@@ -47,7 +39,7 @@ import akka.event.LoggingAdapter;
 public class ReportExecutor extends WorkExecutor {
     private AgentConfig agentConfig;
 
-    public ReportExecutor(AgentConfig agentConfig){
+    public ReportExecutor(AgentConfig agentConfig) {
         this.agentConfig = agentConfig;
     }
 
@@ -55,7 +47,7 @@ public class ReportExecutor extends WorkExecutor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(Master.GenerateReport.class, cmd -> runJob(cmd))
-                .matchAny(cmd  -> unhandled(cmd))
+                .matchAny(cmd -> unhandled(cmd))
                 .build();
     }
 
@@ -71,7 +63,7 @@ public class ReportExecutor extends WorkExecutor {
         for (String pair : taskEvent.getParameters()) {
             cmdLine.addArgument(pair);
         }
-        String dir = agentConfig.getJob().getLogDirectory()+ "reports/" + job.reportJob.trackingId + "/";
+        String dir = agentConfig.getJob().getLogDirectory() + "reports/" + job.reportJob.trackingId + "/";
         cmdLine.addArgument(dir);
 
         cmdLine.setSubstitutionMap(map);
@@ -93,9 +85,9 @@ public class ReportExecutor extends WorkExecutor {
             }*/
             AtomicInteger index = new AtomicInteger();
             job.results.parallelStream().forEach(result -> {
-                String destFile = dir  + index.incrementAndGet() + ".log";
+                String destFile = dir + index.incrementAndGet() + ".log";
                 resultFiles.add(destFile);
-                DownloadFile.downloadFile(result.metrics,destFile);
+                DownloadFile.downloadFile(result.metrics, destFile);
             });
             String outPath = agentConfig.getJob().getOutPath(taskEvent.getJobName(), job.reportJob.trackingId);
             String errPath = agentConfig.getJob().getErrorPath(taskEvent.getJobName(), job.reportJob.trackingId);
@@ -103,19 +95,18 @@ public class ReportExecutor extends WorkExecutor {
             outFile = FileUtils.openOutputStream(new File(outPath));
             errorFile = FileUtils.openOutputStream(new File(errPath));
 
-            PumpStreamHandler psh = new PumpStreamHandler(new ExecLogHandler(outFile),new ExecLogHandler(errorFile));
+            PumpStreamHandler psh = new PumpStreamHandler(new ExecLogHandler(outFile), new ExecLogHandler(errorFile));
 
             executor.setStreamHandler(psh);
             System.out.println(cmdLine);
             int exitResult = executor.execute(cmdLine);
-            ReportResult result ;
-            if(executor.isFailure(exitResult)){
-                result = new ReportResult(dir,job.reportJob, false);
-                log.info("Report Executor Failed, result: " +job.toString());
-            }
-            else{
-                result = new ReportResult(job.reportJob.getHtml() ,job.reportJob, true);
-                log.info("Report Executor Completed, result: " +result.toString());
+            ReportResult result;
+            if (executor.isFailure(exitResult)) {
+                result = new ReportResult(dir, job.reportJob, false);
+                log.info("Report Executor Failed, result: " + job.toString());
+            } else {
+                result = new ReportResult(job.reportJob.getHtml(), job.reportJob, true);
+                log.info("Report Executor Completed, result: " + result.toString());
             }
             for (String resultFile : resultFiles) {
                 FileUtils.deleteQuietly(new File(resultFile));
@@ -125,35 +116,18 @@ public class ReportExecutor extends WorkExecutor {
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
-        }finally {
+        } finally {
             IOUtils.closeQuietly(outFile);
             IOUtils.closeQuietly(errorFile);
         }
 
     }
 
-
-    class ExecLogHandler extends LogOutputStream {
-        private  FileOutputStream file;
-
-        public ExecLogHandler(FileOutputStream file) {
-            this.file = file;
-        }
-
-        @Override
-        protected void processLine(String line, int level) {
-            try {
-                IOUtils.write(line, file);
-            } catch (IOException e) {
-                //e.printStackTrace();
-            }
-        }
-    }
-
     public static final class ReportResult implements Serializable {
         public final Object result;
-        public final Master.Report  report;
+        public final Master.Report report;
         public final boolean success;
+
         public ReportResult(Object result, Master.Report report, boolean success) {
             this.result = result;
             this.report = report;
@@ -167,6 +141,23 @@ public class ReportExecutor extends WorkExecutor {
                     ", report=" + report +
                     ", Success=" + success +
                     '}';
+        }
+    }
+
+    class ExecLogHandler extends LogOutputStream {
+        private FileOutputStream file;
+
+        public ExecLogHandler(FileOutputStream file) {
+            this.file = file;
+        }
+
+        @Override
+        protected void processLine(String line, int level) {
+            try {
+                IOUtils.write(line, file);
+            } catch (IOException e) {
+                //e.printStackTrace();
+            }
         }
     }
 }

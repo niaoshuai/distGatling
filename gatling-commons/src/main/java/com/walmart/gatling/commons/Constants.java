@@ -1,7 +1,7 @@
 /*
  *
  *   Copyright 2016 Walmart Technology
- *  
+ *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
  *   You may obtain a copy of the License at
@@ -18,6 +18,6 @@
 
 package com.walmart.gatling.commons;
 
-public interface  Constants {
-    String PerformanceSystem ="PerformanceSystem";
+public interface Constants {
+    String PerformanceSystem = "PerformanceSystem";
 }

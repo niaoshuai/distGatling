@@ -10,19 +10,19 @@
                     <div class="content table-responsive table-full-width">
                         <table class="table table-hover table-striped">
                             <thead>
-                                <tr>
-                                    <th>STATUS</th>
-                                    <th>HOST</th>
-                                    <th>WORKER ID</th>
-                                    <th>PATH</th>
-                                </tr>
+                            <tr>
+                                <th>STATUS</th>
+                                <th>HOST</th>
+                                <th>WORKER ID</th>
+                                <th>PATH</th>
+                            </tr>
                             <tbody>
-                                <tr *ngFor="let worker of workers" routerLinkActive="active" >
-                                    <td class="text-primary text-uppercase icon-azure">{{worker.status}}</td>
-                                    <td>{{worker.host}}</td>
-                                    <td>{{worker.workerId}}</td>
-                                    <td>{{worker.actor}}</td>
-                                </tr>
+                            <tr *ngFor="let worker of workers" routerLinkActive="active">
+                                <td class="text-primary text-uppercase icon-azure">{{worker.status}}</td>
+                                <td>{{worker.host}}</td>
+                                <td>{{worker.workerId}}</td>
+                                <td>{{worker.actor}}</td>
+                            </tr>
                             </tbody>
                         </table>
 

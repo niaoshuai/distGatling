@@ -1,7 +1,7 @@
 /*
  *
  *   Copyright 2016 Walmart Technology
- *  
+ *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
  *   You may obtain a copy of the License at
@@ -40,8 +40,8 @@ import java.util.concurrent.TimeUnit;
 public class MonitoringConfig {
 
     @Bean
-    public Graphite graphite(@Value("${graphite.host}")  String graphiteHost,
-                             @Value("${graphite.port}")  int graphitePort) {
+    public Graphite graphite(@Value("${graphite.host}") String graphiteHost,
+                             @Value("${graphite.port}") int graphitePort) {
         return new Graphite(
                 new InetSocketAddress(graphiteHost, graphitePort));
     }
@@ -50,7 +50,7 @@ public class MonitoringConfig {
     public GraphiteReporter graphiteReporter(Graphite graphite,
                                              MetricRegistry registry,
                                              @Value("${graphite.prefix}")
-    										 String prefix,@Value("${graphite.frequency-in-seconds}") long frequencyInSeconds) {
+                                                     String prefix, @Value("${graphite.frequency-in-seconds}") long frequencyInSeconds) {
         GraphiteReporter reporter =
                 GraphiteReporter.forRegistry(registry)
                         .prefixedWith(prefix + "." + HostUtils.lookupHost())
@@ -64,7 +64,7 @@ public class MonitoringConfig {
     }
 
     //@Bean
-    public ConsoleReporter consoleReporter( MetricRegistry registry ) {
+    public ConsoleReporter consoleReporter(MetricRegistry registry) {
         ConsoleReporter reporter = ConsoleReporter.forRegistry(registry)
                 .convertRatesTo(TimeUnit.SECONDS)
                 .convertDurationsTo(TimeUnit.MILLISECONDS)
@@ -80,6 +80,7 @@ public class MonitoringConfig {
         registry.register("memory", memoryUsageGaugeSet);
         return memoryUsageGaugeSet;
     }
+
     @Bean
     public ThreadStatesGaugeSet
     threadStatesGaugeSet(MetricRegistry registry) {

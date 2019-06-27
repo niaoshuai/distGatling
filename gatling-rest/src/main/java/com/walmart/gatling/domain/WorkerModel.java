@@ -1,7 +1,7 @@
 /*
  *
  *   Copyright 2016 Walmart Technology
- *  
+ *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
  *   You may obtain a copy of the License at
@@ -35,7 +35,7 @@ public class WorkerModel {
     private String workerId;
     private String role;
 
-    public WorkerModel(String status, String actor, String workerId)  {
+    public WorkerModel(String status, String actor, String workerId) {
         this.status = status;
         try {
             this.actor = java.net.URLDecoder.decode(actor, "UTF-8");
@@ -44,6 +44,6 @@ public class WorkerModel {
         }
         this.workerId = workerId;
         this.host = this.actor.split("@")[1].split(":")[0];
-        this.role = this.actor.split("/")[4].split("#")[0].replaceAll("[0-9]","");
+        this.role = this.actor.split("/")[4].split("#")[0].replaceAll("[0-9]", "");
     }
 }

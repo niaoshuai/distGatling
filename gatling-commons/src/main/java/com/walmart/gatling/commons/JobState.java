@@ -1,7 +1,7 @@
 /*
  *
  *   Copyright 2016 Walmart Technology
- *  
+ *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
  *   You may obtain a copy of the License at
@@ -21,13 +21,7 @@ package com.walmart.gatling.commons;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
@@ -41,7 +35,7 @@ public final class JobState {
     private final ConcurrentLinkedDeque<Master.Job> pendingJobs;
     private final ConcurrentLinkedQueue<Worker.Result> failedJobs;
     private final ConcurrentLinkedQueue<Worker.Result> completedJobs;
-    private HashMap<String,JobSummary> jobSummary ;
+    private HashMap<String, JobSummary> jobSummary;
 
     public JobState() {
         jobsInProgress = new HashMap<>();
@@ -52,6 +46,7 @@ public final class JobState {
         completedJobs = new ConcurrentLinkedQueue<>();
         jobSummary = new HashMap<>();
     }
+
     private JobState(JobState jobState, JobAccepted workAccepted) {
         ConcurrentLinkedDeque<Master.Job> tmp_pendingJob = new ConcurrentLinkedDeque<Master.Job>(jobState.pendingJobs);
         Set<String> tmp_acceptedWorkIds = new HashSet<String>(jobState.acceptedJobIds);
@@ -67,7 +62,7 @@ public final class JobState {
         //job summary
         JobSummary summary = jobSummary.get(workAccepted.job.trackingId);
         TaskEvent taskInfo = (TaskEvent) workAccepted.job.taskEvent;
-        if(summary == null){
+        if (summary == null) {
             summary = new JobSummary(taskInfo.getJobInfo());
             jobSummary.put(workAccepted.job.trackingId, summary);
         }
@@ -179,7 +174,7 @@ public final class JobState {
         jobSummary = new HashMap<>(jobState.jobSummary);
         //job summary
         Optional<JobSummary> summary = jobSummary.values().stream().filter(s -> s.containsWork(jobTimedOut.workId)).findFirst();
-        if(summary.isPresent()) {
+        if (summary.isPresent()) {
             Optional<TaskEvent> task = summary.get().getByWork(jobTimedOut.workId);
             if (task.isPresent()) {
                 task.get().setStatus(JobStatusString.TIMEDOUT);
@@ -200,7 +195,7 @@ public final class JobState {
         jobSummary = new HashMap<>(jobState.jobSummary);
         //job summary
         Optional<JobSummary> summary = jobSummary.values().stream().filter(s -> s.containsWork(jobPostponed.workId)).findFirst();
-        if(summary.isPresent()) {
+        if (summary.isPresent()) {
             Optional<TaskEvent> task = summary.get().getByWork(jobPostponed.workId);
             if (task.isPresent()) {
                 task.get().setStatus(JobStatusString.POSTPONED);
@@ -314,7 +309,7 @@ public final class JobState {
         final String workId;
         final String workerId;
 
-        public JobStarted(String workId,String workerId) {
+        public JobStarted(String workId, String workerId) {
             this.workId = workId;
             this.workerId = workerId;
         }

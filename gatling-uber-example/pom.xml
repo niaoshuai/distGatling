@@ -17,14 +17,14 @@
   ~
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-   <!-- <parent>
-        <artifactId>distributed-gatling</artifactId>
-        <groupId>com.walmart.store</groupId>
-        <version>${current.version}</version>
-    </parent>-->
+    <!-- <parent>
+         <artifactId>distributed-gatling</artifactId>
+         <groupId>com.walmart.store</groupId>
+         <version>${current.version}</version>
+     </parent>-->
     <groupId>com.walmart.store</groupId>
     <version>1.0.2-SNAPSHOT</version>
     <modelVersion>4.0.0</modelVersion>
@@ -101,7 +101,7 @@
                     </execution>
                 </executions>
             </plugin>
-        <plugin>
+            <plugin>
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>scala-maven-plugin</artifactId>
                 <version>${scala.maven-plugin.version}</version>

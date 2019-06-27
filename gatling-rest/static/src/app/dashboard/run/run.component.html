@@ -1,18 +1,20 @@
-<div class="main-content" >
+<div class="main-content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-8">
-                <div class="card" >
+                <div class="card">
                     <div class="header">
                         <h4 class="title">Please provide complete information for your performance test.</h4>
                     </div>
                     <div class="content">
-                        <form #simulationForm="ngForm"  novalidate >
+                        <form #simulationForm="ngForm" novalidate>
                             <div class="row">
                                 <div class="col-md-5">
                                     <div class="form-group">
                                         <label>Simulation File</label>
-                                        <input #fileInput type="file" name="file" required class="form-control" (change)="selectFile($event)" placeholder="Simulation File" accept=".scala"/>
+                                        <input #fileInput (change)="selectFile($event)" accept=".scala" class="form-control" name="file"
+                                               placeholder="Simulation File" required
+                                               type="file"/>
                                     </div>
                                 </div>
                             </div>
@@ -20,7 +22,9 @@
                                 <div class="col-md-5">
                                     <div class="form-group">
                                         <label>Simulation resources</label>
-                                        <input #fileInput type="file" name="file" required class="form-control" (change)="selectResourcesFile($event)" placeholder="Resources File" accept=".zip"/>
+                                        <input #fileInput (change)="selectResourcesFile($event)" accept=".zip" class="form-control" name="file"
+                                               placeholder="Resources File" required
+                                               type="file"/>
                                     </div>
                                 </div>
                             </div>
@@ -28,13 +32,16 @@
                                 <div class="col-md-5">
                                     <div class="form-group">
                                         <label>Complete Simulation Class Name</label>
-                                        <input type="text" name="package" required class="form-control" [(ngModel)]="model.packageName" placeholder="Complete Simulation Class Name(com.walmart.store.BasicSimulation)">
+                                        <input [(ngModel)]="model.packageName" class="form-control" name="package" placeholder="Complete Simulation Class Name(com.walmart.store.BasicSimulation)"
+                                               required
+                                               type="text">
                                     </div>
                                 </div>
                                 <div class="col-md-5">
                                     <div class="form-group">
                                         <label>Simulation Parallelism</label>
-                                        <input type="number" name="parallelism"  required class="form-control"  [(ngModel)]="model.parallelism" placeholder="Simulation Parallelism">
+                                        <input [(ngModel)]="model.parallelism" class="form-control" name="parallelism" placeholder="Simulation Parallelism"
+                                               required type="number">
                                     </div>
                                 </div>
 
@@ -44,14 +51,16 @@
                                 <div class="col-md-5">
                                     <div class="form-group">
                                         <label>Access Key</label>
-                                        <input type="text" name="accessKey" class="form-control" [(ngModel)]="model.accessKey" placeholder="Access Key">
+                                        <input [(ngModel)]="model.accessKey" class="form-control" name="accessKey"
+                                               placeholder="Access Key" type="text">
                                     </div>
                                 </div>
 
                                 <div class="col-md-5">
                                     <div class="form-group">
                                         <label>User Name</label>
-                                        <input type="text" name="userName" class="form-control" [(ngModel)]="model.userName" placeholder="User Name">
+                                        <input [(ngModel)]="model.userName" class="form-control" name="userName"
+                                               placeholder="User Name" type="text">
                                     </div>
                                 </div>
                             </div>
@@ -60,26 +69,29 @@
                                 <div class="col-md-5">
                                     <div class="form-group">
                                         <label>Optional Parameters</label>
-                                        <input type="text" name="parameter" class="form-control" [(ngModel)]="model.parameter" placeholder="Optional Parameters">
+                                        <input [(ngModel)]="model.parameter" class="form-control" name="parameter"
+                                               placeholder="Optional Parameters" type="text">
                                     </div>
                                 </div>
                                 <div class="col-md-5">
                                     <div class="form-group">
                                         <label>Partition Name</label>
-                                        <select type="text" name="partitionName" required  class="form-control" [(ngModel)]="model.partitionName"  placeholder="Partition Name">
-                                           <option *ngFor="let partition of partitions">
-                                               {{ partition }}
-                                           </option>
+                                        <select [(ngModel)]="model.partitionName" class="form-control" name="partitionName" placeholder="Partition Name"
+                                                required type="text">
+                                            <option *ngFor="let partition of partitions">
+                                                {{ partition }}
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="row">
-                                <span type="text"  *ngIf="!success" class="text-danger">The job is not submitted properly please correct your input and try again.</span>
+                                <span *ngIf="!success" class="text-danger" type="text">The job is not submitted properly please correct your input and try again.</span>
                             </div>
 
-                            <button type="submit"   class="btn btn-info btn-fill left" (click)="upload();">Upload & Run </button>
+                            <button (click)="upload();" class="btn btn-info btn-fill left" type="submit">Upload & Run
+                            </button>
                             <div class="clearfix"></div>
                         </form>
                     </div>

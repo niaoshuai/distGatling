@@ -1,7 +1,7 @@
 /*
  *
  *   Copyright 2016 Walmart Technology
- *  
+ *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
  *   You may obtain a copy of the License at
@@ -41,24 +41,24 @@ public class WorkerFactory {
         ActorSystem system = ActorSystem.create(Constants.PerformanceSystem, conf);
 
         Set<ActorPath> initialContacts = new HashSet<>(agent.getContactPoint()
-                    .map(p->ActorPaths.fromString(p))
-                    .collect(Collectors.toList()));
+                .map(p -> ActorPaths.fromString(p))
+                .collect(Collectors.toList()));
 
-        ClusterClientSettings settings =  ClusterClientSettings.create(system).withInitialContacts(initialContacts);
+        ClusterClientSettings settings = ClusterClientSettings.create(system).withInitialContacts(initialContacts);
         final ActorRef clusterClient = system.actorOf(ClusterClient.props(settings), "clusterClient");
 
-        IntStream.range(1,agent.getActor().getNumberOfActors()+1).forEach(i->
-            system.actorOf(Worker.props(clusterClient,
-                            createWorkExecutor(agent),
-                            agent.getActor().getRole()),
-                            agent.getActor().getRole()+i)
+        IntStream.range(1, agent.getActor().getNumberOfActors() + 1).forEach(i ->
+                system.actorOf(Worker.props(clusterClient,
+                        createWorkExecutor(agent),
+                        agent.getActor().getRole()),
+                        agent.getActor().getRole() + i)
         );
         return system;
 
     }
 
-    private static Props createWorkExecutor(AgentConfig agentConfig){
-       return Props.create(JarExecutor.class, agentConfig);
+    private static Props createWorkExecutor(AgentConfig agentConfig) {
+        return Props.create(JarExecutor.class, agentConfig);
     }
 
 }

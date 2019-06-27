@@ -19,7 +19,7 @@
 package com.walmart.cth.gatling
 
 /**
- * Needed because Gatling does a hardcoded check against the existence of _target/classes_ when run fom the IDE...
- */
+  * Needed because Gatling does a hardcoded check against the existence of _target/classes_ when run fom the IDE...
+  */
 object Placeholder {
 }

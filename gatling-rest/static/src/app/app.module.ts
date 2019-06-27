@@ -17,10 +17,10 @@ import {AuthGuard} from './guard/auth.guard';
 import {WorkerService} from "./services/workers.service";
 import {ErrorInterceptor} from "./services/interceptor";
 
-import { ChartistModule } from 'ng-chartist';
+import {ChartistModule} from 'ng-chartist';
 
 @NgModule({
-    imports:      [
+    imports: [
         BrowserModule,
         DashboardModule,
         SidebarModule,
@@ -31,19 +31,21 @@ import { ChartistModule } from 'ng-chartist';
         RouterModule.forRoot([]),
         ChartistModule
     ],
-    declarations: [ AppComponent, DashboardComponent ],
+    declarations: [AppComponent, DashboardComponent],
     providers: [
         AuthGuard,
         WorkerService,
         {
             provide: LocationStrategy,
-            useClass: HashLocationStrategy},
+            useClass: HashLocationStrategy
+        },
         {
             provide: HTTP_INTERCEPTORS,
             useClass: ErrorInterceptor,
             multi: true
         }
     ],
-    bootstrap:    [ AppComponent ]
+    bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
