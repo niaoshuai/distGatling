@@ -159,3 +159,9 @@ NB: The bodies input wait a zip containing resource files used for your test
     
   
 ![Build Status](https://travis-ci.org/Abiy/distGatling.svg?branch=master)      
+
+### 常见错误
+执行过程找不到JAVA
+
+修改gatling.sh 修正JAVA_HOME命令
+
