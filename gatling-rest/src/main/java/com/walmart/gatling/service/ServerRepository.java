@@ -150,11 +150,14 @@ public class ServerRepository {
     }
 
     private String getResourcesFileName(SimulationJobModel simulationJobModel, boolean hasBodiesFeed) {
-        if (!hasBodiesFeed)
+        if (!hasBodiesFeed) {
             return "";
+        }
         String[] splits = simulationJobModel.getResourcesFile().split("/");
         if (splits.length > 0) //return the last name
+        {
             return splits[splits.length - 1];
+        }
         return "";
     }
 
@@ -248,10 +251,12 @@ public class ServerRepository {
                     logPath = taskEvent.get().getStdLogPath();
                 }
                 return loadLogFromPath(logPath);
-            } else
+            } else {
                 throw new UnknownResourceException("The Specified taskJobId id is not available.");
-        } else
+            }
+        } else {
             throw new UnknownResourceException("The Specified tracking id id is not available.");
+        }
     }
 
     private String loadLogFromPath(String logPath) throws NotFoundException {

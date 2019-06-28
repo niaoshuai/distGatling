@@ -230,6 +230,7 @@ public final class JobState {
 
     }
 
+    @Override
     public String toString() {
         return "" + acceptedJobIds.size();
     }

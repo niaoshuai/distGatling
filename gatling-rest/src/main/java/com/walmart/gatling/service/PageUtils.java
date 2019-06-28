@@ -31,10 +31,11 @@ public class PageUtils {
         PageRequest pageRequest;
         int pageNum = page > 0 ? page - 1 : 0;
         int pageSize = size > 0 ? size : 1;
-        if (StringUtils.isEmpty(sortBy))
+        if (StringUtils.isEmpty(sortBy)) {
             pageRequest = new PageRequest(pageNum, pageSize);
-        else
+        } else {
             pageRequest = new PageRequest(pageNum, pageSize, Sort.Direction.DESC, sortBy);
+        }
         return pageRequest;
     }
 }

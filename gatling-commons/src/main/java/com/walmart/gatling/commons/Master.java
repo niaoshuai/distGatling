@@ -363,7 +363,7 @@ public class Master extends AbstractPersistentActor {
         if (unsentFile.isPresent()) {
             String tId = unsentFile.get().split("_")[0];
             UploadFile uploadFile = fileDatabase.get(tId);
-            if (uploadFile.type.equalsIgnoreCase("lib")) {
+            if ("lib".equalsIgnoreCase(uploadFile.type)) {
                 String soonToBeRemotePath = agentConfig.getMasterUrl(uploadFile.path);
                 getSender().tell(new FileJob(null, uploadFile, soonToBeRemotePath), getSelf());
             } else {
@@ -580,8 +580,9 @@ public class Master extends AbstractPersistentActor {
         }
 
         public String getFileName() {
-            if (type.equalsIgnoreCase("conf") || type.equalsIgnoreCase("lib"))
+            if ("conf".equalsIgnoreCase(type) || "lib".equalsIgnoreCase(type)) {
                 return type + "/" + name;
+            }
             return "user-files/" + type + "/" + name;
         }
 

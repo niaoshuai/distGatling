@@ -124,7 +124,7 @@ public class FileUploadController {
                 FileCopyUtils.copy(simulationFile.getInputStream(), stream);
                 stream.close();
                 job = new SimulationJobModel();
-                job.setCount(getValue(paramMap, "parallelism").equals("") ? 0 : Short.valueOf(getValue(paramMap, "parallelism")));
+                job.setCount("".equals(getValue(paramMap, "parallelism")) ? 0 : Short.valueOf(getValue(paramMap, "parallelism")));
                 job.setPartitionAccessKey(getValue(paramMap, "accessKey"));
                 job.setRoleId(partitionName);
                 job.setTag(getValue(paramMap, "tag"));

@@ -43,6 +43,7 @@ public class CommandClientActor extends AbstractActor {
     private final String clientId = UUID.randomUUID().toString();
     private LoggingAdapter log = Logging.getLogger(getContext().system(), this);
     private final Procedure<Object> working = new Procedure<Object>() {
+        @Override
         public void apply(Object message) {
             log.info("{}", message);
             if (message instanceof MasterClientProtocol.CommandLineJobSubmitted) {
@@ -55,6 +56,7 @@ public class CommandClientActor extends AbstractActor {
     };
 
     private final Procedure<Object> idle = new Procedure<Object>() {
+        @Override
         public void apply(Object message) {
             if (message == StartCommand) {
                 //upload artifacts if not remoteArtifact
@@ -90,10 +92,11 @@ public class CommandClientActor extends AbstractActor {
     }
 
     private String jobId() {
-        if (currentJobId != null)
+        if (currentJobId != null) {
             return currentJobId;
-        else
+        } else {
             throw new IllegalStateException("Not working");
+        }
     }
 
     @Override

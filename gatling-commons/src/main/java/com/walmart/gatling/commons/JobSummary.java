@@ -65,36 +65,44 @@ public class JobSummary implements Serializable {
 
     public long getStartTime() {
         Optional<TaskEvent> task = getTaskInfoList().stream().min((t1, t2) -> Long.valueOf(t1.getStartTimeStamp()).compareTo(Long.valueOf(t2.getStartTimeStamp())));
-        if (task.isPresent())
+        if (task.isPresent()) {
             return task.get().getStartTimeStamp();
-        return 0l;
+        }
+        return 0L;
     }
 
     public long getEndTime() {
         Optional<TaskEvent> task = getTaskInfoList().stream().max((t1, t2) -> Long.valueOf(t1.getEndTimeStamp()).compareTo(Long.valueOf(t2.getEndTimeStamp())));
-        if (task.isPresent())
+        if (task.isPresent()) {
             return task.get().getEndTimeStamp();
-        return 0l;
+        }
+        return 0L;
     }
 
     public String getStatus() {
-        if (getTaskInfoList().stream().allMatch(p -> p.getStatus().equalsIgnoreCase(JobState.JobStatusString.COMPLETED)))
+        if (getTaskInfoList().stream().allMatch(p -> p.getStatus().equalsIgnoreCase(JobState.JobStatusString.COMPLETED))) {
             return JobState.JobStatusString.COMPLETED;
+        }
 
-        if (getTaskInfoList().stream().anyMatch(p -> p.getStatus().equalsIgnoreCase(JobState.JobStatusString.FAILED)))
+        if (getTaskInfoList().stream().anyMatch(p -> p.getStatus().equalsIgnoreCase(JobState.JobStatusString.FAILED))) {
             return JobState.JobStatusString.FAILED;
+        }
 
-        if (getTaskInfoList().stream().anyMatch(p -> p.getStatus().equalsIgnoreCase(JobState.JobStatusString.PENDING)))
+        if (getTaskInfoList().stream().anyMatch(p -> p.getStatus().equalsIgnoreCase(JobState.JobStatusString.PENDING))) {
             return JobState.JobStatusString.PENDING;
+        }
 
-        if (getTaskInfoList().stream().anyMatch(p -> p.getStatus().equalsIgnoreCase(JobState.JobStatusString.TIMEDOUT)))
+        if (getTaskInfoList().stream().anyMatch(p -> p.getStatus().equalsIgnoreCase(JobState.JobStatusString.TIMEDOUT))) {
             return JobState.JobStatusString.TIMEDOUT;
+        }
 
-        if (getTaskInfoList().stream().anyMatch(p -> p.getStatus().equalsIgnoreCase(JobState.JobStatusString.STARTED)))
+        if (getTaskInfoList().stream().anyMatch(p -> p.getStatus().equalsIgnoreCase(JobState.JobStatusString.STARTED))) {
             return JobState.JobStatusString.STARTED;
+        }
 
-        if (getTaskInfoList().stream().allMatch(p -> p.getStatus().equalsIgnoreCase(JobState.JobStatusString.ACCEPTED)))
+        if (getTaskInfoList().stream().allMatch(p -> p.getStatus().equalsIgnoreCase(JobState.JobStatusString.ACCEPTED))) {
             return JobState.JobStatusString.ACCEPTED;
+        }
 
         return JobState.JobStatusString.FAILED;
 

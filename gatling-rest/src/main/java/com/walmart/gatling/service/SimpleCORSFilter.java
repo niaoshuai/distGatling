@@ -54,7 +54,7 @@ public class SimpleCORSFilter implements Filter {
         response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, Accept, X-Requested-With, remember-me, Cache-Control");
 
         // Just REPLY OK if request method is OPTIONS for CORS (pre-flight)
-        if (request.getMethod().equals("OPTIONS")) {
+        if ("OPTIONS".equals(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
             return;
         }

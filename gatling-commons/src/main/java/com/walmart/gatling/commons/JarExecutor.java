@@ -48,7 +48,9 @@ import java.util.concurrent.TimeUnit;
 import static akka.dispatch.Futures.future;
 
 /**
- * Created by ahailemichael on 8/17/15.
+ *
+ * @author ahailemichael
+ * @date 8/17/15
  */
 public class JarExecutor extends WorkExecutor {
 
@@ -195,6 +197,7 @@ public class JarExecutor extends WorkExecutor {
             if (taskEvent.getJobInfo().parameterString != null && !taskEvent.getJobInfo().parameterString.isEmpty()) {
                 envOptions.put("JAVA_OPTS", taskEvent.getJobInfo().parameterString);
             }
+
             log.info("command: {} and env options {}", cmdLine, envOptions);
             int exitResult = executor.execute(cmdLine, envOptions);
             Worker.Result result = new Worker.Result(exitResult, agentConfig.getUrl(errPath), agentConfig.getUrl(outPath), null, job);
@@ -220,12 +223,18 @@ public class JarExecutor extends WorkExecutor {
         }
     }
 
+    /**
+     * 执行脚本
+     * @param job
+     * @param taskEvent
+     * @return
+     */
     private CommandLine getScriptCommand(Master.Job job, TaskEvent taskEvent) {
-        CommandLine cmdLine = new CommandLine(agentConfig.getJob().getCommand());
+        CommandLine cmdLine = new CommandLine("${path}");
         Map<String, Object> map = new HashMap<>();
 
         map.put("path", new File(agentConfig.getJob().getJobArtifact(taskEvent.getJobName())));
-        cmdLine.addArgument("${path}");
+//        cmdLine.addArgument("${path}");
         //parameters come from the task eventjob.jobFileUrl,
         for (String pair : taskEvent.getParameters()) {
             cmdLine.addArgument(pair);
@@ -252,7 +261,15 @@ public class JarExecutor extends WorkExecutor {
         return cmdLine;
     }
 
+    /**
+     * 执行Jar包
+     * @param job
+     * @param taskEvent
+     * @return
+     */
     private CommandLine getJarCommand(Master.Job job, TaskEvent taskEvent) {
+        // 处理环境变量
+//        cmdLine = "source /etc/profile && source ~/.bash_profile && source ~/.bashrc && " + cmdLine;
         CommandLine cmdLine = new CommandLine("java");
         cmdLine.addArgument("-jar");
 

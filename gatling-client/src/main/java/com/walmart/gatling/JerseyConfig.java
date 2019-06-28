@@ -72,8 +72,9 @@ public class JerseyConfig extends ResourceConfig {
             for (BeanDefinition bd : scanner.findCandidateComponents(controllerPackage)) {
                 logger.info("Registering Jersey endpoint class:  {}", bd.getBeanClassName());
                 Class<?> controllerClazz = getJerseyControllerClass(bd.getBeanClassName());
-                if (controllerClazz != null)
+                if (controllerClazz != null) {
                     register(controllerClazz);
+                }
             }
         }
     }

@@ -261,8 +261,9 @@ public class AgentConfig {
         }
 
         public int[] getExitValues() {
-            if (exitValues == null)
+            if (exitValues == null) {
                 return new int[]{0};
+            }
             return exitValues;
         }
 
