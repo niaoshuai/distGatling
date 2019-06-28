@@ -148,10 +148,12 @@ public class FileUploadController {
     }
 
     private String getValue(Map<String, String[]> paramMap, String key) {
-        if (!paramMap.containsKey(key))
+        if (!paramMap.containsKey(key)) {
             return "";
-        if (paramMap.get(key).length < 1)
+        }
+        if (paramMap.get(key).length < 1) {
             return "";
+        }
         return paramMap.get(key)[0];
     }
 

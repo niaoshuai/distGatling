@@ -1,6 +1,30 @@
 server:
-  port: 8080 # Server information for embedded jetty
+  port: 18080 # Server information for embedded jetty
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: [info, health, beans, env, metrics, mappings, scheduledtasks, sessions, threaddump, docs, logfile, jolokia] #暴露的端点 docs是web端点
+      base-path: /actuator #默认/actuator 不更改可不用配置
+      #CORS跨域支持
+#      cors:
+#        allowed-origins: http：//example.com
+#        allowed-methods: GET,PUT,POST,DELETE
+  endpoint:
+    beans:
+      cache:
+        time-to-live: 10s #端点缓存响应的时间量
+    health:
+      show-details: always #详细信息显示给所有用户
+#  server:
+#    port: 10000 #默认8080
+#    address: 127.0.0.1 #配置此项表示不允许远程连接
+  #监测
+  metrics:
+    web:
+      server:
+        auto-time-requests: true
 security:
   username: "gatling"
   password: "gatling"
@@ -17,8 +41,8 @@ multipart:
   maxFileSize: 100Mb  # Max file size. Values can use the suffixed "MB" or "KB" to indicate a Megabyte or Kilobyte size.
 multipart.max-file-size: 100MB
 multipart.max-request-size: 100MB
-spring.http.multipart.max-file-size: 100Mb
-spring.http.multipart.max-request-size: 100Mb
+spring.servlet.multipart.max-file-size: 100000000
+spring.servlet.multipart.max-request-size: 100000000
 #Actor configurations for the actors used during report generation
 actor:
   numberOfActors: 1
@@ -26,13 +50,13 @@ actor:
   role: "report"
   executerType: "script"
 job:
-  path: "/Users/ahailem/workspace/gatling/gatling-charts-highcharts-bundle-3.0.2" # Path to the base directory where the gatling lib, simulation, data, and conf are stored
-  logDirectory: "/Users/ahailem/workspace/gatling/gatling-charts-highcharts-bundle-3.0.2/" # Base directory for logfiles(log/error and log/std)
-  command: "/bin/bash" # Base command to run gatling.sh file
-  artifact: "/Users/ahailem/workspace/gatling/gatling-charts-highcharts-bundle-3.0.2/bin/{0}.sh" # Path for the location of gatling.sh
+  path: "/home/niaoshuai/gatling-charts-highcharts-bundle-3.1.3" # Path to the base directory where the gatling lib, simulation, data, and conf are stored
+  logDirectory: "/home/niaoshuai/gatling-charts-highcharts-bundle-3.1.3/" # Base directory for logfiles(log/error and log/std)
+  command: "/bin/sh" # Base command to run gatling.sh file
+  artifact: "/home/niaoshuai/gatling-charts-highcharts-bundle-3.1.3/bin/{0}.sh" # Path for the location of gatling.sh
 
 file:
-  repository: "/Users/ahailem/workspace/uploads/" # Base directory used as a temporary staging area for user file uploads(simulation files,conf,data files and lib files)
+  repository: "/home/niaoshuai/uploads/" # Base directory used as a temporary staging area for user file uploads(simulation files,conf,data files and lib files)
 
 graphite: #Graphite configuration for master api metrics
   host: localhost

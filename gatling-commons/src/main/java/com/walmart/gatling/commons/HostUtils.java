@@ -18,7 +18,10 @@
 
 package com.walmart.gatling.commons;
 
-import java.net.*;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.Enumeration;
 
 /**
@@ -47,11 +50,26 @@ public class HostUtils {
 
     private static String getLocalAddress() {
         try {
-            Enumeration<NetworkInterface> b = NetworkInterface.getNetworkInterfaces();
-            while (b.hasMoreElements()) {
-                for (InterfaceAddress f : b.nextElement().getInterfaceAddresses())
-                    if (f.getAddress().isSiteLocalAddress())
-                        return f.getAddress().getHostAddress();
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+//            while (b.hasMoreElements()) {
+//                for (InterfaceAddress f : b.nextElement().getInterfaceAddresses()) {
+//                    if (f.getAddress().isSiteLocalAddress()) {
+//                        return f.getAddress().getHostAddress();
+//                    }
+//                }
+//            }
+            while (interfaces.hasMoreElements()) {
+                NetworkInterface network = interfaces.nextElement();
+                Enumeration<InetAddress> addresses = network.getInetAddresses();
+                while (addresses != null && addresses.hasMoreElements()) {
+                    InetAddress addressT = addresses.nextElement();
+                    if (addressT != null && !addressT.isLoopbackAddress()) {
+                        String address = addressT.getHostAddress();
+                        if (address != null && address.startsWith("192.168")) {
+                            return address;
+                        }
+                    }
+                }
             }
         } catch (SocketException e) {
             e.printStackTrace();

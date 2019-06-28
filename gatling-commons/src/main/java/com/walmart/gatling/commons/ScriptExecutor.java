@@ -173,8 +173,9 @@ public class ScriptExecutor extends WorkExecutor {
         log.info("Verified Script worker received task: {}", message);
         Map<String, Object> map = new HashMap<>();
 
-        if (StringUtils.isNotEmpty(agentConfig.getJob().getMainClass()))
+        if (StringUtils.isNotEmpty(agentConfig.getJob().getMainClass())) {
             cmdLine.addArgument(agentConfig.getJob().getCpOrJar());
+        }
 
         map.put("path", new File(agentConfig.getJob().getJobArtifact(taskEvent.getJobName())));
         cmdLine.addArgument("${path}");

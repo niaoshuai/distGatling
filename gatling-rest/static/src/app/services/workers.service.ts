@@ -50,7 +50,7 @@ export class WorkerService {
     }
 
     getMasterMetrics(): Observable<any> {
-        return this.http.get<any>(this.baseUrl + "/metrics", {headers: this.headers()})
+        return this.http.get<any>(this.baseUrl + "/actuator/metrics", {headers: this.headers()})
 
     }
 

@@ -51,12 +51,13 @@ public class Worker extends AbstractActor {
     private LoggingAdapter log = Logging.getLogger(getContext().system(), this);
     private String currentJobId = null;
     private final Procedure<Object> idle = new Procedure<Object>() {
+        @Override
         public void apply(Object message) {
             if (message == KeepAliveTick) {
                 sendToMaster(new MasterWorkerProtocol.WorkerRequestsFile(workerId, workerRole, host));
-            } else if (message instanceof MasterWorkerProtocol.WorkIsReady)
+            } else if (message instanceof MasterWorkerProtocol.WorkIsReady) {
                 sendToMaster(new MasterWorkerProtocol.WorkerRequestsWork(workerId, workerRole));
-            else if (message instanceof Master.Job) {
+            } else if (message instanceof Master.Job) {
                 Job job = (Job) message;
                 log.info("Got work: {}", job);
                 currentJobId = job.jobId;
@@ -72,11 +73,13 @@ public class Worker extends AbstractActor {
                 getContext().become(receiveBuilder()
                         .matchAny(p -> working.apply(p))
                         .build());
-            } else
+            } else {
                 unhandled(message);
+            }
         }
     };
     private final Procedure<Object> working = new Procedure<Object>() {
+        @Override
         public void apply(Object message) {
             //log.info("Work received. Result {}.", message);
             if (message instanceof WorkComplete) {
@@ -149,10 +152,11 @@ public class Worker extends AbstractActor {
     }
 
     private String jobId() {
-        if (currentJobId != null)
+        if (currentJobId != null) {
             return currentJobId;
-        else
+        } else {
             throw new IllegalStateException("Not working");
+        }
     }
 
     @Override
@@ -160,11 +164,11 @@ public class Worker extends AbstractActor {
         return new OneForOneStrategy(-1, Duration.Inf(),
                 t -> {
                     log.info("Throwable, Work is failed for1 " + t);
-                    if (t instanceof ActorInitializationException)
+                    if (t instanceof ActorInitializationException) {
                         return stop();
-                    else if (t instanceof DeathPactException)
+                    } else if (t instanceof DeathPactException) {
                         return stop();
-                    else if (t instanceof RuntimeException) {
+                    } else if (t instanceof RuntimeException) {
                         if (currentJobId != null) {
                             log.info("RuntimeException, Work is failed for " + currentJobId);
                             sendToMaster(new MasterWorkerProtocol.WorkFailed(workerId, jobId(), new Result(-1, "", "", "", null)));

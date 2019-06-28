@@ -34,7 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
@@ -204,10 +204,11 @@ public class RestController {
         List<JobSummary> summaries = serverRepository.getJobSummary();
         Optional<JobSummary> summary = summaries.stream().filter(p -> p.getJobInfo().trackingId.equalsIgnoreCase(trackingId)).findFirst();
         log.info("Processing  get job detail.");
-        if (summary.isPresent())
+        if (summary.isPresent()) {
             return Response.status(Response.Status.OK).entity(summary.get()).build();
-        else
+        } else {
             return Response.status(Response.Status.BAD_REQUEST).entity("The Specified tracking id is not available.").build();
+        }
     }
 
     @GET
@@ -314,7 +315,7 @@ public class RestController {
      * @param trackingId
      * @return
      */
-    @PreAuthorize("hasRole('ROLE_USER')")
+//    @PreAuthorize("hasRole('ROLE_USER')")
     @POST
     @Path("/abort/{id}")
     @Produces("application/json")
